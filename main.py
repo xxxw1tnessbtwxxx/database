@@ -1,7 +1,3 @@
-
-# Предметы для базы данных:
-# Высшая математика, ОАП, ОПБД, дискретная математика, история, английский язык
-
 import sqlite3
 
 def create():
@@ -44,7 +40,83 @@ def create():
 
 create()
 
+def update_counter(math: int, programming: int, discrete_math: int, history: int, english_lang: int):
+    with sqlite3.connect('examenation.db') as db:
+        c = db.cursor()
 
+        if math == 5:
+            c.execute("""UPDATE grades SET count_5 = count_5 + 1 WHERE subject = 'math'""")
+            db.commit()
+
+        elif math == 4:
+            c.execute("""UPDATE grades SET count_4 = count_4 + 1 WHERE subject = 'math'""")
+            db.commit()
+
+        elif math == 3:
+            c.execute("""UPDATE grades SET count_3 = count_3 + 1 WHERE subject = 'math'""")
+            db.commit()
+
+        elif math == 2:
+            c.execute("""UPDATE grades SET count_2 = count_2 + 1 WHERE subject = 'math'""")
+            db.commit()
+
+        
+        if programming == 5:
+            c.execute("""UPDATE grades SET count_5 = count_5 + 1 WHERE subject = 'programming'""")
+
+        elif programming == 4:
+            c.execute("""UPDATE grades SET count_4 = count_4 + 1 WHERE subject = 'programming'""")
+
+        elif programming == 3:
+            c.execute("""UPDATE grades SET count_3 = count_3 + 1 WHERE subject = 'programming'""")
+
+        elif programming == 2:
+            c.execute("""UPDATE grades SET count_2 = count_2 + 1 WHERE subject = 'programming'""")
+
+        if discrete_math == 5:
+            c.execute("""UPDATE grades SET count_5 = count_5 + 1 WHERE subject = 'discrete_math'""")
+
+        elif discrete_math == 4:
+            c.execute("""UPDATE grades SET count_4 = count_4 + 1 WHERE subject = 'discrete_math'""")
+
+        elif discrete_math == 3:
+            c.execute("""UPDATE grades SET count_3 = count_3 + 1 WHERE subject = 'discrete_math'""")
+
+        elif discrete_math == 2:
+            c.execute("""UPDATE grades SET count_2 = count_2 + 1 WHERE subject = 'discrete_math'""")
+
+        if history == 5:
+            c.execute("""UPDATE grades SET count_5 = count_5 + 1 WHERE subject = 'history'""")
+
+        elif history == 4:
+            c.execute("""UPDATE grades SET count_4 = count_4 + 1 WHERE subject = 'history'""")
+
+        elif history == 3:
+            c.execute("""UPDATE grades SET count_3 = count_3 + 1 WHERE subject = 'history'""")
+
+        elif history == 2:
+            c.execute("""UPDATE grades SET count_2 = count_2 + 1 WHERE subject = 'history'""")
+
+        if english_lang == 5:
+            c.execute("""UPDATE grades SET count_5 = count_5 + 1 WHERE subject = 'english_lang'""")
+
+        elif english_lang == 4:
+            c.execute("""UPDATE grades SET count_4 = count_4 + 1 WHERE subject = 'english_lang'""")
+
+        elif english_lang == 3:
+            c.execute("""UPDATE grades SET count_3 = count_3 + 1 WHERE subject = 'english_lang'""")
+
+
+        elif english_lang == 2:
+            c.execute("""UPDATE grades SET count_2 = count_2 + 1 WHERE subject = 'english_lang'""")
+
+
+        db.commit()
+    db.close()
+
+
+# здесь вызывать при дропе таблицы   
+'''
 with sqlite3.connect('examenation.db') as db:
     c = db.cursor()
 
@@ -54,9 +126,8 @@ with sqlite3.connect('examenation.db') as db:
     c.execute("INSERT INTO grades VALUES ('history', '0', '0', '0', '0')")
     c.execute("INSERT INTO grades VALUES ('english_lang', '0', '0', '0', '0')")
 
+'''
 
-
-# db - DATA BASE
 
 
 thisTable = int(input("Выберите таблицу для взаимодействия с данными:\n 1. Предметы\n 2. Оценки\n 3. Студенты\n(!): "))
@@ -129,17 +200,18 @@ if thisTable == 3:
 
             name = input("Введите имя студента: ") or "None"
             group_name = input("Введите название группы: ") or "None"
-            math = input("Введите оценку по высшей математике: ") or "0"
-            programming = input("Введите оценку по программированию: ") or "0"
-            discrete_math = input("Введите оценку по дискретной математике: ") or "0"
-            history = input("Введите оценку по истории: ") or "0"
-            english_lang = input("Введите оценку по английскому языку: ") or "0"
+            math = int(input("Введите оценку по высшей математике: ")) or "0"
+            programming = int(input("Введите оценку по программированию: ")) or "0"
+            discrete_math = int(input("Введите оценку по дискретной математике: ")) or "0"
+            history = int(input("Введите оценку по истории: ")) or "0"
+            english_lang = int(input("Введите оценку по английскому языку: ")) or "0"
+
+            update_counter(math, programming, discrete_math, history, english_lang)
             
 
             c.execute(f"INSERT INTO students VALUES ('{name}', '{group_name}', '{math}', '{programming}', '{discrete_math}', '{history}', '{english_lang}')")
 
-            if math == 5:
-                c.execute("UPDATE grades SET count_5 ")
+            
 
             db.commit()
         db.close()
@@ -161,6 +233,7 @@ if thisTable == 3:
             c = db.cursor()
 
             info = c.execute(f"SELECT * FROM students WHERE name = '{name}'").fetchall()
+            print("---------")
 
             for row in info:
                 print(f"Имя студента: {row[0]}")
@@ -171,6 +244,6 @@ if thisTable == 3:
                 print(f"История: {row[5]}")
                 print(f"Английский язык: {row[6]}")
             
+            print("---------")
             db.commit()
         db.close()
-
